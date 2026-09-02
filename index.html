@@ -74,7 +74,29 @@ radial-gradient(circle at 50% 45%,#273e78,#111c3d 55%,#080e20)}
 <section id="deckbuilder" class="screen"><div class="title"><div><h1>🧩 Deck Builder</h1><p>Wähle 5 Würfel und baue eine Synergie-Kombo.</p></div><button class="btn primary" onclick="toast('Deck gespeichert!')">SPEICHERN</button></div><div class="grid g2"><div class="card"><h2>Dein Deck</h2><div class="dieGrid" id="deckSlots"></div></div><div class="card"><h2>Synergie-Bonus</h2><div class="perk">⚡ Tempo <b>+12%</b></div><div class="perk">🔥 Schaden über Zeit <b>+18%</b></div><div class="perk">👹 Boss-Schaden <b>+20%</b></div><p class="small">Die stärksten Builds kombinieren Kontrolle, Schaden und Wirtschaft.</p></div></div></section>
 
 <section id="talents" class="screen"><div class="title"><div><h1>🌳 Talentbaum</h1><p>Verteile Meisterschaftspunkte auf offensive, defensive oder wirtschaftliche Talente.</p></div></div><div class="grid g3"><div class="card"><h2>⚔️ Angriff</h2><div class="perk">Grundschaden <b>5/10</b></div><div class="perk">Krit-Chance <b>3/10</b></div><div class="perk">Boss-Schaden <b>2/10</b></div><button class="btn primary" onclick="talent()">PUNKT VERGEBEN</button></div><div class="card"><h2>🛡️ Verteidigung</h2><div class="perk">Basisleben <b>4/10</b></div><div class="perk">Schildstärke <b>2/10</b></div><div class="perk">Slow-Resistenz <b>1/10</b></div><button class="btn primary" onclick="talent()">PUNKT VERGEBEN</button></div><div class="card"><h2>🪙 Wirtschaft</h2><div class="perk">Startgold <b>5/10</b></div><div class="perk">Gold pro Kill <b>4/10</b></div><div class="perk">Energie <b>3/10</b></div><button class="btn primary" onclick="talent()">PUNKT VERGEBEN</button></div></div></section>
-<section id="settings" class="screen"><div class="title"><div><h1>⚙️ Einstellungen</h1><p>Audio, Grafik und Spielgefühl.</p></div></div><div class="grid g2"><div class="card"><div class="stat">Musik <input type="checkbox" checked></div><div class="stat">Soundeffekte <input type="checkbox" checked></div><div class="stat">Vibration <input type="checkbox" checked></div><div class="stat">Schadenszahlen <input type="checkbox" checked></div></div><div class="card"><div class="stat">Grafik <b>HOCH</b></div><div class="stat">FPS <b>60</b></div><div class="stat">Sprache <b>Deutsch</b></div><button class="btn" onclick="toast('Einstellungen gespeichert')">SPEICHERN</button></div></div></section>
+<section id="online" class="screen">
+<div class="title"><div><h1>🌐 Online Koop</h1><p>V6 Echtzeit-Lobby · 2–4 Spieler · WebSocket</p></div>
+<button class="btn green" onclick="createRoom()">RAUM ERSTELLEN</button></div>
+<div class="grid g2">
+<div class="card">
+<h2>Lobby</h2>
+<div class="stat">Verbindung <b id="netStatus">OFFLINE</b></div>
+<div class="stat">Raum <b id="roomCode">—</b></div>
+<div class="stat">Spieler <b id="onlinePlayers">0 / 4</b></div>
+<div id="onlineLog" class="ability">Noch keine Verbindung.</div>
+<div style="display:flex;gap:8px;margin-top:10px">
+<input id="roomInput" placeholder="Raumcode" style="flex:1;padding:10px;border-radius:10px;background:#081126;border:1px solid #344b79;color:white">
+<button class="btn" onclick="joinRoom()">BEITRETEN</button>
+</div>
+</div>
+<div class="card"><h2>Synchronisation</h2>
+<div class="perk">🌊 Welle <b id="syncWave">—</b></div>
+<div class="perk">❤️ Basisleben <b id="syncLives">—</b></div>
+<div class="perk">👥 Team <b id="syncTeam">—</b></div>
+<p class="small">Der Server ist autoritativ für Lobby und Run-State. Jeder Client erhält Zustands-Updates per WebSocket.</p>
+</div>
+</div></section>
+<section id="settings class="screen"><div class="title"><div><h1>⚙️ Einstellungen</h1><p>Audio, Grafik und Spielgefühl.</p></div></div><div class="grid g2"><div class="card"><div class="stat">Musik <input type="checkbox" checked></div><div class="stat">Soundeffekte <input type="checkbox" checked></div><div class="stat">Vibration <input type="checkbox" checked></div><div class="stat">Schadenszahlen <input type="checkbox" checked></div></div><div class="card"><div class="stat">Grafik <b>HOCH</b></div><div class="stat">FPS <b>60</b></div><div class="stat">Sprache <b>Deutsch</b></div><button class="btn" onclick="toast('Einstellungen gespeichert')">SPEICHERN</button></div></div></section>
 
 </main></div>
 <div class="mobile" id="mobile"></div>
@@ -82,7 +104,7 @@ radial-gradient(circle at 50% 45%,#273e78,#111c3d 55%,#080e20)}
 <div class="modal" id="result"><div class="card"><h1 id="resultTitle">🏆 Sieg!</h1><p id="resultText"></p><div class="stat">Wellen <b id="resultWave">0</b></div><div class="stat">Gold verdient <b id="resultGold">0</b></div><button class="btn primary" onclick="closeResult()">ZURÜCK ZUM HAUPTMENÜ</button></div></div>
 
 <script>
-const menu=[['home','🏠','Hauptmenü'],['modes','🎮','Spielen'],['coop','🤝','Koop'],['shop','🛒','Shop'],['pass','👑','Battle Pass'],['events','🎉','Events'],['inventory','🎲','Würfel'],['upgrades','⬆️','Upgrades'],['quests','📜','Quests'],['mastery','🌟','Meisterschaft'],['bosses','👹','Bosses'],['collection','📚','Sammlung'],['deckbuilder','🧩','Deck Builder'],['talents','🌳','Talentbaum'],['profile','👤','Profil'],['clan','🛡️','Clan'],['rank','🏆','Rangliste'],['settings','⚙️','Einstellungen']];
+const menu=[['home','🏠','Hauptmenü'],['modes','🎮','Spielen'],['coop','🤝','Koop'],['shop','🛒','Shop'],['pass','👑','Battle Pass'],['events','🎉','Events'],['inventory','🎲','Würfel'],['upgrades','⬆️','Upgrades'],['quests','📜','Quests'],['mastery','🌟','Meisterschaft'],['bosses','👹','Bosses'],['collection','📚','Sammlung'],['online','🌐','Online Koop'],['deckbuilder','🧩','Deck Builder'],['talents','🌳','Talentbaum'],['profile','👤','Profil'],['clan','🛡️','Clan'],['rank','🏆','Rangliste'],['settings','⚙️','Einstellungen']];
 const dice=[
 ['Blitz','d1','⚡',6,'Kettenblitz'],['Magie','d2','✦',7,'Kritischer Zauber'],['Feuer','d3','🔥',7,'Brand'],['Gift','d4','☠️',6,'Giftstapel'],['Laser','d5','🔴',5,'Durchdringung'],['Zeit','d2','⏳',3,'Slow'],['Eis','d6','❄️',7,'Einfrieren'],['Gold','d3','🪙',4,'Bonusgold'],['Schild','d4','🛡️',4,'Barriere']];
 const bosses=[
@@ -122,7 +144,7 @@ function placeDie(slot){
  toast('🎲 '+d[0]+' auf Slot '+(+slot.dataset.slot+1)+' gesetzt');
  update();
 }
-function startGame(mode){state.mode=mode;state.wave=1;state.lives=20;state.runGold=0;state.energy=120;state.running=true;state.selected=null;state.boostUntil=0;document.getElementById('modeTitle').textContent='🎲 '+mode;document.getElementById('modeDesc').textContent=mode==='Koop'?'Gemeinsame Energie, Team-Ultimate und verstärkte Bosse.':'Baue dein Board und überlebe die Wellen.';show('game');buildArena('arena');clearInterval(state.spawn);clearInterval(state.waveTimer);state.spawn=setInterval(spawnEnemy,mode==='Boss Rush'?1050:1250);state.waveTimer=setInterval(nextWave,6500);updateGame();toast(mode+' gestartet!')}
+function startGame(mode){if(mode==='Koop'&&onlineRoom)sendWS({type:'start_game',room:onlineRoom});state.mode=mode;state.wave=1;state.lives=20;state.runGold=0;state.energy=120;state.running=true;state.selected=null;state.boostUntil=0;document.getElementById('modeTitle').textContent='🎲 '+mode;document.getElementById('modeDesc').textContent=mode==='Koop'?'Gemeinsame Energie, Team-Ultimate und verstärkte Bosse.':'Baue dein Board und überlebe die Wellen.';show('game');buildArena('arena');clearInterval(state.spawn);clearInterval(state.waveTimer);state.spawn=setInterval(spawnEnemy,mode==='Boss Rush'?1050:1250);state.waveTimer=setInterval(nextWave,6500);updateGame();toast(mode+' gestartet!')}
 function spawnEnemy(){if(!state.running)return;const a=document.getElementById('arena'), e=document.createElement('div');let isBoss=(state.mode==='Boss Rush'?state.wave%3===0:state.wave%5===0);let type=isBoss?'boss':(Math.random()<.16?'tank':Math.random()<.17?'shield':Math.random()<.25?'fast':'normal');e.className='enemy '+type;e.style.left='8%';e.style.top=(15+Math.random()*68)+'%';const hp=isBoss?100:30+state.wave*4;e.dataset.hp=hp;if(isBoss){const b=bosses[Math.floor(state.wave/5)%bosses.length];e.innerHTML=`<div class="bossAura"></div><div class="hp"><i style="width:100%"></i></div><div class="label">${b[0]} · ${b[1]}</div>`}else e.innerHTML=`<div class="hp"><i style="width:100%"></i></div>`;a.appendChild(e);setTimeout(()=>autoAttack(e),500);setTimeout(()=>{if(e.isConnected){e.remove();state.lives-=isBoss?3:1;updateGame();if(state.lives<=0)finish(false)}},isBoss?10000:5200)}
 function autoAttack(e){if(!e.isConnected||!state.running)return;const p=document.createElement('div');p.className='projectile';p.style.left='25%';p.style.top='30%';document.getElementById('arena').appendChild(p);setTimeout(()=>{p.remove();if(!e.isConnected||!state.running)return;let hp=+e.dataset.hp;let crit=Math.random()<.15;let dmg=crit?55:28; if(Date.now()<state.boostUntil)dmg*=1.25;hp-=dmg;e.dataset.hp=hp;const h=e.querySelector('.hp i');if(h)h.style.width=Math.max(0,hp/(30+state.wave*4)*100)+'%';damage(e,dmg,crit);if(hp<=0){e.remove();state.gold+=crit?18:10;state.runGold+=crit?18:10;updateGame()}else setTimeout(()=>autoAttack(e),state.speed===2?325:650)} ,520)}
 function damage(e,dmg,crit){burstParticlesAt(e.offsetLeft,e.offsetTop);const d=document.createElement('div');d.className='damage '+(crit?'crit':'');d.textContent=(crit?'CRIT ':'-')+dmg;d.style.left=e.offsetLeft+'px';d.style.top=e.offsetTop+'px';document.getElementById('arena').appendChild(d);setTimeout(()=>d.remove(),650)}
@@ -184,7 +206,42 @@ function renderBosses(){document.getElementById('bossCards').innerHTML=bosses.ma
 
 function renderDeck(){document.getElementById('deckSlots').innerHTML=dice.slice(0,5).map((d,i)=>`<div class="dieCard">${die(d)}<h4>${d[0]}</h4><div class="xpTiny">Meisterschaft XP ${320+i*47}/1000</div></div>`).join('')}
 function talent(){state.gold=Math.max(0,state.gold-150);update();toast('🌳 Talentpunkt investiert!')}
-initNav();renderModes();buildArena('preview',true);buildArena('coopPreview',true);renderDice('inventoryDice');renderGameDice();renderPass();renderUpgrades();renderQuests();renderBadges();renderRanks();renderMastery();renderBosses();renderDeck();update();state.speed=1;
+
+let ws=null, onlineRoom=null, clientId=null;
+function connectWS(){
+ const proto=location.protocol==='https:'?'wss':'ws';
+ const host=location.host || 'localhost:8080';
+ try{
+  ws=new WebSocket(proto+'://'+host);
+  ws.onopen=()=>{document.getElementById('netStatus').textContent='ONLINE';logNet('Verbunden mit Game Server');};
+  ws.onclose=()=>{document.getElementById('netStatus').textContent='OFFLINE';logNet('Verbindung getrennt');};
+  ws.onerror=()=>logNet('WebSocket-Fehler');
+  ws.onmessage=e=>handleWS(JSON.parse(e.data));
+ }catch(err){logNet('Server nicht erreichbar — Offline-Modus aktiv');}
+}
+function sendWS(msg){if(ws&&ws.readyState===1)ws.send(JSON.stringify(msg));else toast('Server nicht verbunden. Starte zuerst den V6-Server.')}
+function logNet(t){const x=document.getElementById('onlineLog');if(x)x.textContent=t}
+function createRoom(){sendWS({type:'create_room',name:'Player'});}
+function joinRoom(){const code=document.getElementById('roomInput').value.trim().toUpperCase();if(code)sendWS({type:'join_room',room:code,name:'Player'});}
+function handleWS(m){
+ if(m.type==='welcome'){clientId=m.clientId}
+ if(m.type==='room_created'||m.type==='room_joined'){
+  onlineRoom=m.room;document.getElementById('roomCode').textContent=m.room;
+  show('online');toast('🌐 Raum '+m.room+' verbunden');updateOnline(m.state);
+ }
+ if(m.type==='state')updateOnline(m.state);
+ if(m.type==='error')toast('⚠️ '+m.message);
+ if(m.type==='game_started'){show('game');toast('🤝 Online-Koop gestartet!');updateOnline(m.state)}
+}
+function updateOnline(s){
+ if(!s)return;
+ document.getElementById('onlinePlayers').textContent=(s.players?.length||0)+' / 4';
+ document.getElementById('syncWave').textContent=s.wave??'—';
+ document.getElementById('syncLives').textContent=s.lives??'—';
+ document.getElementById('syncTeam').textContent=s.players?.map(p=>p.name).join(', ')||'—';
+}
+function startOnlineGame(){sendWS({type:'start_game',room:onlineRoom});}
+initNav();renderModes();buildArena('preview',true);buildArena('coopPreview',true);renderDice('inventoryDice');renderGameDice();renderPass();renderUpgrades();renderQuests();renderBadges();renderRanks();renderMastery();renderBosses();renderDeck();update();state.speed=1;connectWS();
 </script>
 </body>
 </html>

@@ -1,26 +1,26 @@
-# Dice Defense V5 — Crystal Rift
+# Dice Defense V6 — Online Coop Foundation
 
-Die V5 baut auf dem V4-Prototyp auf und fokussiert auf Game-Feel und Build-Tiefe.
+V6 enthält zusätzlich zum Frontend einen echten kleinen Node.js-WebSocket-Server.
 
-## V5 Highlights
-- stärker ausgearbeitete Tower-Defense-Arena
-- feste Tower-Slots
-- Würfelrollen, Level und Fusion
-- visuelle Treffer-/Krit-/Partikeleffekte
-- Boss-Aura und Boss-Phasen
-- Build-Synergien zwischen Würfeln
-- Deck Builder
-- Talentbaum für dauerhafte Progression
-- Würfel-Meisterschaft
-- Boss-Kompendium
-- Sammlung für kosmetische Inhalte
-- 6 Spielmodi inklusive Koop-Konzept
-- Battle Pass, Shop, Events, Quests, Clan, Rangliste, Profil
-- Mobile UI
-- keine externen Libraries
+## Lokal starten
+1. Node.js installieren.
+2. Im Projektordner:
+   `npm install`
+3. Start:
+   `npm start`
+4. Browser öffnen:
+   `http://localhost:8080`
 
-## GitHub Pages
-Repository → Settings → Pages → Deploy from branch → `main` → `/ (root)`.
+## Online-Koop
+- Raum erstellen
+- Raumcode an Freunde schicken
+- Bis zu 4 Spieler pro Raum
+- Echtzeit-State über WebSockets
+- Server hält Welle, Leben und Spieler-Liste
+- Start eines Koop-Runs wird an alle Clients synchronisiert
 
-## Nächster technischer Schritt
-Für echtes Online-Koop: WebSocket/Realtime-Server, Lobby/Matchmaking, Accounts, Cloud-Saves, serverseitige Spielzustände und Anti-Cheat.
+## GitHub
+Das Frontend kann weiterhin als GitHub-Pages-Website veröffentlicht werden. Für echtes Online-Koop muss `server.js` zusätzlich auf einem Node-fähigen Hosting laufen (z.B. Render, Railway, Fly.io, eigener VPS). GitHub Pages selbst führt den Node-WebSocket-Server nicht aus.
+
+## Sicherheit / Produktionsstatus
+Das ist eine spielbare Multiplayer-Grundlage, noch kein produktionsreifes Backend. Für einen Release fehlen u.a. Authentifizierung, persistente Accounts, Datenbank, Reconnect/Session-Recovery, serverseitige Tower-/Combat-Logik, Rate Limits und Anti-Cheat.
