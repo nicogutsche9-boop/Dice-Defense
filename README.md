@@ -1,33 +1,26 @@
-# Dice Defense V3 — Crystal Rift
+# Dice Defense V4 — Crystal Rift
 
-Ein eigenständiger, GitHub-Pages-fertiger Tower-Defense-Prototyp.
+GitHub-Pages-fertiger Tower-Defense-Prototyp.
 
-## V3 Gameplay
-- 6 Spielmodi
-- Wellen- und Lebenssystem
-- mehrere Gegnerklassen: Normal, Fast, Tank, Shield
-- 6 konzeptionelle Bosse mit eigenen Mechaniken/Beschreibungen
-- Würfel-Beschwörung
-- Würfel-Level
-- Fusion / Merge
-- kritische Treffer
-- Projektil- und Schadensanimationen
-- Energie, Gold und Edelsteine
-- Ultimate-Fähigkeit
+## V4
+- festes Tower-Slot-System statt freier Platzierung
+- unterschiedliche Würfelrollen und Seltenheiten
+- Beschwören auf freien Slots
+- Fusion mit Level-Erhöhung
+- Gegnerwellen + Boss-Wellen
+- Boss-Kompendium mit 6 Bossen und 3 Phasen
+- Ultimate/Overcharge mit Partikeleffekt
+- 1x/2x Spieltempo
+- Projektil-, Krit- und Schadenseffekte
 - Wellen-Mutatoren
-- Koop-Lobby-Konzept
-- Shop, Battle Pass, Events
-- Würfel-Inventar
-- Meta-Upgrades
-- Quests, Profil, Clan, Rangliste und Einstellungen
-- responsive Mobile-Oberfläche
-- keine externen Libraries
+- Spielmodi: Klassisch, Boss Rush, Zeit Angriff, Koop, Endlos, Herausforderung
+- Battle Pass, Shop, Events, Quests, Clan, Profil, Rangliste
+- neue Meisterschafts- und Sammlung-Menüs
+- responsive Mobile-Navigation
+- komplett ohne externe Libraries
 
-## GitHub Pages
-1. Dateien ins Repository laden.
-2. Settings → Pages.
-3. Deploy from branch → `main` → `/ (root)`.
-4. Die erzeugte Pages-Adresse öffnen.
+## Start
+`index.html` direkt öffnen oder Repository auf GitHub Pages veröffentlichen.
 
-## Hinweis
-Online-Koop, Accounts, echtes Matchmaking, serverseitige Spielstände und Zahlungen sind noch nicht enthalten. Dafür wird als nächster technischer Schritt ein Backend benötigt.
+## Noch kein echter Online-Service
+Online-Matchmaking, Accounts, Cloud-Saves, serverseitige Anti-Cheat-Logik und echtes 2–4-Spieler-Koop brauchen ein Backend. Der V4-Prototyp simuliert die Koop-Oberfläche lokal.
