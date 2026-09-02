@@ -1,18 +1,35 @@
-# Dice Defense V11 — GLB Gameplay Integration
+# Dice Defense V12 — Abilities, Projectiles & Boss Phases
 
-V11 verwendet die mitgelieferten echten GLB-Assets jetzt nicht mehr nur in der Galerie, sondern direkt im Gameplay.
+V12 verbindet die echten GLB-Assets mit dem Kampf-System.
 
-## Neu
-- echte GLB-Würfelmodelle auf den Tower-Slots
-- echte GLB-Bossmodelle in Boss-Wellen
-- gemeinsamer transparenter WebGL-Layer über der Arena
-- animierte 3D-Tower
-- schwebende/rotierende 3D-Bosse
-- Kamera, Licht und Schatteneffekte
-- Zuordnung von Würfel-Fähigkeiten zu Asset-Dateien
-- Zuordnung der wichtigsten Bossnamen zu Asset-Dateien
-- Asset-Library aus V10 bleibt erhalten
-- V7/V8 Multiplayer-Grundlage bleibt enthalten
+## Würfel im Kampf
+- Blitz: Kettenblitz
+- Magie/Omega: kritischer Zauber
+- Feuer: Brand
+- Gift: Giftstapel
+- Laser: schneller Durchdringungsstrahl
+- Zeit: Slow-/Kontroll-Effekt
+- Eis: Freeze-/Slow-Effekt
+- Gold: Bonusgold
+- Schild: Barriere-/Kontroll-Effekt
+
+## VFX
+- Energiebolzen
+- Feuer-/Magie-Projektile
+- Eis-Partikel
+- AOE-Ringe
+- Kritische Treffer
+- Boss-Skill-Effekte
+
+## Bosse
+- Bloom Queen — Dornensturm
+- Void Behemoth — Leerenpuls
+- Mecha Dreadnaught — Raketenregen
+- Inferno Lord — Feuerwand
+- Chrono Titan — Zeitbruch
+- Prism Hydra — Prisma-Split
+
+Bosse haben drei visuelle Phasen und eigene Spezialangriffe.
 
 ## Start
 ```bash
@@ -21,5 +38,4 @@ npm start
 ```
 Dann `http://localhost:8080`.
 
-## Hinweis
-Die GLB-Modelle werden im Browser über Three.js/GLTFLoader geladen. Für die nächste Ausbaustufe können wir die einzelnen GLB-Assets noch mit echten Angriffseffekten, Projektilen, Animation-Clips, Hitboxen, Stats und Boss-Phasen verbinden.
+V12 ist weiterhin ein spielbarer Web-Prototyp. Für eine echte Produktionsversion sollten die Kampfregeln anschließend server-authoritativ in die Multiplayer-Schicht verschoben werden.
