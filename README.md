@@ -1,20 +1,20 @@
-# Dice Defense V7 — Authoritative Multiplayer
+# Dice Defense V8 — Crystal Rift 3D Art Edition
 
-V7 ist der nächste technische Multiplayer-Schritt.
+V8 bringt den Prototyp in Richtung einer fertigen Mobile-Game-Präsentation.
 
-## Neu
-- server-authoritativer Run-State
-- 20 Hz Game-Loop
-- serverseitige Wellen
-- serverseitige Gegnerbewegung
-- serverseitige HP/Schaden/Rewards
-- serverseitige Tower-Platzierung
-- serverseitige Fusion
-- serverseitige Ultimate-Fähigkeit
-- 2–4 Spieler pro Lobby
-- Live-Synchronisation der Spieler, Gegner, Türme, Welle, Leben, Gold und Energie
-- Boss-Wellen bis Welle 50
-- Sieg/Niederlage wird vom Server entschieden
+## V8
+- neue „Crystal Rift“-Art-Direction
+- pseudo-3D/3D-look für Würfel, Gegner und Bosse
+- 3D Showcase mit modellartigen Würfelkarten
+- detailliertere Arena mit Licht-/Depth-Layern
+- ausgearbeitete Tower-Slots
+- Boss-Auren und stärkere Trefferoptik
+- Online-Koop-Grundlage aus V7 bleibt erhalten
+- server-authoritative State, Wellen, Gegner, Tower, Fusion und Ultimate
+- Deck Builder, Talentbaum, Meisterschaft, Sammlung und alle bisherigen Menüs
+
+## Hinweis zu echten 3D-Dateien
+Die V8-Webversion nutzt bewusst eine leichtgewichtige, browserfertige 3D-Illusion ohne externe Asset-Abhängigkeiten. Für echte GLB/GLTF-Modelle, Rigging, Animationen und vollständige 3D-Kamera können in einem nächsten Schritt konkrete 3D-Assets integriert werden.
 
 ## Start
 ```bash
@@ -23,9 +23,5 @@ npm start
 ```
 Dann `http://localhost:8080` öffnen.
 
-## Multiplayer
-Spieler 1 erstellt einen Raum. Die anderen geben den Raumcode ein.
-Für öffentliches Online-Koop muss `server.js` auf einem Node-fähigen Host laufen.
-
-## Produktionshinweis
-V7 ist eine technische Gameplay-/Netcode-Grundlage, kein fertiger kommerzieller Backend-Stack. Für Release fehlen u.a. Auth, Datenbank, Matchmaking, Reconnect, Persistenz, Rate-Limits, Anti-Cheat, skalierbare Room-Verwaltung und vollständige serverseitige Regeln für jede einzelne Fähigkeit.
+## Online
+Der WebSocket-Server muss für echtes Internet-Koop auf Node-fähigem Hosting laufen. GitHub Pages kann nur das statische Frontend hosten.
