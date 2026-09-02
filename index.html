@@ -60,6 +60,17 @@ radial-gradient(ellipse at 50% 55%,#243a72 0,#101b3b 43%,#060b18 78%)}
 .modelStats{position:absolute;bottom:16px;left:18px;right:18px;display:flex;justify-content:space-between;z-index:3;font-size:11px;color:#b8c8e7}
 .showcase{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:800px){.showcase{grid-template-columns:1fr}.slot{width:70px;height:70px}.tower{width:55px;height:55px}}
+
+#arena{position:relative}
+#arena3d{position:absolute;inset:0;width:100%;height:100%;z-index:7;pointer-events:none}
+#arena .slot{z-index:5}
+#arena .tower{z-index:8}
+#arena .tower.modelTower{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
+#arena .tower.modelTower .towerModelCanvas{position:absolute;inset:-7px;width:calc(100% + 14px);height:calc(100% + 14px);border-radius:22px;pointer-events:none}
+#arena .tower.modelTower .name{z-index:3}
+#arena .boss.hasGLB{background:transparent!important;box-shadow:none!important}
+#arena .boss.hasGLB .bossModelCanvas{position:absolute;inset:-22px;width:calc(100% + 44px);height:calc(100% + 44px);pointer-events:none}
+.modelBadge{position:absolute;left:50%;top:-31px;transform:translateX(-50%);font-size:9px;background:#050a16dd;border:1px solid #5b72a8;border-radius:7px;padding:3px 6px;white-space:nowrap;z-index:12}
 </style>
 
 </head>
@@ -71,7 +82,7 @@ radial-gradient(ellipse at 50% 55%,#243a72 0,#101b3b 43%,#060b18 78%)}
 
 <section id="modes" class="screen"><div class="title"><div><h1>🎮 Spielmodi</h1><p>Jeder Modus verändert das Spielgefühl.</p></div></div><div class="grid g3" id="modeCards"></div></section>
 
-<section id="game" class="screen"><div class="title"><div><h1 id="modeTitle">🎲 Klassisch</h1><p id="modeDesc">Baue dein Board und überlebe die Wellen.</p></div><button class="btn danger" onclick="endGame()">AUFGEBEN</button></div><div class="grid g2"><div class="card"><div class="arena" id="arena"><div class="wavebar"><span class="pill">🌊 WELLE <b id="wave">1</b></span><span class="pill">❤️ <b id="lives">20</b></span><span class="pill">🪙 <b id="runGold">0</b></span></div><div class="path p1"></div><div class="path p2"></div><div class="path p3"></div>
+<section id="game" class="screen"><div class="title"><div><h1 id="modeTitle">🎲 Klassisch</h1><p id="modeDesc">Baue dein Board und überlebe die Wellen.</p></div><button class="btn danger" onclick="endGame()">AUFGEBEN</button></div><div class="grid g2"><div class="card"><div class="arena" id="arena"><canvas id="arena3d"></canvas><div class="wavebar"><span class="pill">🌊 WELLE <b id="wave">1</b></span><span class="pill">❤️ <b id="lives">20</b></span><span class="pill">🪙 <b id="runGold">0</b></span></div><div class="path p1"></div><div class="path p2"></div><div class="path p3"></div>
 <div id="enemyStart" class="route-marker">ENTRY</div><div id="enemyGoal" class="route-marker goal">CORE</div><div class="controls"><button class="btn primary" onclick="summon()">🎲 BESCHWÖREN · 30 💧</button>
 <button class="btn purple" onclick="mergeSelected()">✨ FUSION</button>
 <button class="btn green" onclick="ability()">⚡ ULTIMATE</button>
@@ -171,15 +182,35 @@ function placeDie(slot){
  if(state.energy<30){toast('💧 Nicht genug Energie!');return}
  state.energy-=30;
  const idx=Math.floor(Math.random()*6), d=dice[idx], t=document.createElement('div');
- t.className='tower '+d[1]+' pulse';t.style.left=slot.style.left;t.style.top=slot.style.top;
- t.innerHTML=`<span class="name">${d[0]}</span>${d[2]}<span class="rarity"></span><span class="lv">Lv.${1+Math.floor(Math.random()*4)}</span><span class="sel"></span>`;
+ t.className='tower '+d[1]+' pulse modelTower';t.style.left=slot.style.left;t.style.top=slot.style.top;
+ const assetName=({Blitz:'blitz.glb',Magie:'omega.glb',Feuer:'feuer.glb',Gift:'gift.glb',Laser:'laser.glb',Zeit:'zeit.glb',Eis:'eis.glb',Gold:'geld.glb',Schild:'schild.glb'})[d[0]]||'angriff.glb';
+ t.dataset.asset=assetName;
+ t.innerHTML=`<canvas class="towerModelCanvas"></canvas><span class="name">${d[0]}</span><span class="rarity"></span><span class="lv">Lv.${1+Math.floor(Math.random()*4)}</span><span class="sel"></span>`;
  t.onclick=(ev)=>{ev.stopPropagation();document.querySelectorAll('#arena .tower').forEach(x=>x.classList.remove('selected'));t.classList.add('selected');state.selected=t};
  slot.classList.add('occupied');slot.textContent='';slot.appendChild(t);
- toast('🎲 '+d[0]+' auf Slot '+(+slot.dataset.slot+1)+' gesetzt');
+ if(window.mountTowerGLB)mountTowerGLB(t,assetName);
+ toast('🎲 '+d[0]+' · echtes 3D-Modell auf Slot '+(+slot.dataset.slot+1));
  update();
 }
 function startGame(mode){if(mode==='Koop'&&onlineRoom)sendWS({type:'start_game',room:onlineRoom});state.mode=mode;state.wave=1;state.lives=20;state.runGold=0;state.energy=120;state.running=true;state.selected=null;state.boostUntil=0;document.getElementById('modeTitle').textContent='🎲 '+mode;document.getElementById('modeDesc').textContent=mode==='Koop'?'Gemeinsame Energie, Team-Ultimate und verstärkte Bosse.':'Baue dein Board und überlebe die Wellen.';show('game');buildArena('arena');clearInterval(state.spawn);clearInterval(state.waveTimer);state.spawn=setInterval(spawnEnemy,mode==='Boss Rush'?1050:1250);state.waveTimer=setInterval(nextWave,6500);updateGame();toast(mode+' gestartet!')}
-function spawnEnemy(){if(!state.running)return;const a=document.getElementById('arena'), e=document.createElement('div');let isBoss=(state.mode==='Boss Rush'?state.wave%3===0:state.wave%5===0);let type=isBoss?'boss':(Math.random()<.16?'tank':Math.random()<.17?'shield':Math.random()<.25?'fast':'normal');e.className='enemy '+type;e.style.left='8%';e.style.top=(15+Math.random()*68)+'%';const hp=isBoss?100:30+state.wave*4;e.dataset.hp=hp;if(isBoss){const b=bosses[Math.floor(state.wave/5)%bosses.length];e.innerHTML=`<div class="bossAura"></div><div class="hp"><i style="width:100%"></i></div><div class="label">${b[0]} · ${b[1]}</div>`}else e.innerHTML=`<div class="hp"><i style="width:100%"></i></div>`;a.appendChild(e);setTimeout(()=>autoAttack(e),500);setTimeout(()=>{if(e.isConnected){e.remove();state.lives-=isBoss?3:1;updateGame();if(state.lives<=0)finish(false)}},isBoss?10000:5200)}
+function spawnEnemy(){
+ if(!state.running)return;
+ const a=document.getElementById('arena'),e=document.createElement('div');
+ let isBoss=(state.mode==='Boss Rush'?state.wave%3===0:state.wave%5===0);
+ let type=isBoss?'boss':(Math.random()<.16?'tank':Math.random()<.17?'shield':Math.random()<.25?'fast':'normal');
+ e.className='enemy '+type;e.style.left='8%';e.style.top=(15+Math.random()*68)+'%';
+ const hp=isBoss?100:30+state.wave*4;e.dataset.hp=hp;
+ if(isBoss){
+   const b=bosses[Math.floor(state.wave/5)%bosses.length];
+   e.innerHTML=`<canvas class="bossModelCanvas"></canvas><div class="bossAura"></div><div class="hp"><i style="width:100%"></i></div><div class="label">${b[0]} · ${b[1]}</div>`;
+   const bossAsset=({Bloom Queen:'bloom_queen.glb','Void Behemoth':'void_behemoth.glb','Mecha Dreadnaught':'mecha_dreadnaught.glb','Inferno Lord':'inferno_lord.glb','Chrono Titan':'chronotitan.glb','Prism Hydra':'prism_hydra.glb'})[b[0]]||'bloom_queen.glb';
+   e.dataset.asset=bossAsset;e.classList.add('hasGLB');
+   setTimeout(()=>window.mountBossGLB&&mountBossGLB(e,bossAsset),0);
+ }else e.innerHTML=`<div class="hp"><i style="width:100%"></i></div>`;
+ a.appendChild(e);
+ setTimeout(()=>autoAttack(e),500);
+ setTimeout(()=>{if(e.isConnected){e.remove();if(window.removeArenaModel)removeArenaModel(e);state.lives-=isBoss?3:1;updateGame();if(state.lives<=0)finish(false)}},isBoss?10000:5200)
+}
 function autoAttack(e){if(!e.isConnected||!state.running)return;const p=document.createElement('div');p.className='projectile';p.style.left='25%';p.style.top='30%';document.getElementById('arena').appendChild(p);setTimeout(()=>{p.remove();if(!e.isConnected||!state.running)return;let hp=+e.dataset.hp;let crit=Math.random()<.15;let dmg=crit?55:28; if(Date.now()<state.boostUntil)dmg*=1.25;hp-=dmg;e.dataset.hp=hp;const h=e.querySelector('.hp i');if(h)h.style.width=Math.max(0,hp/(30+state.wave*4)*100)+'%';damage(e,dmg,crit);if(hp<=0){e.remove();state.gold+=crit?18:10;state.runGold+=crit?18:10;updateGame()}else setTimeout(()=>autoAttack(e),state.speed===2?325:650)} ,520)}
 function damage(e,dmg,crit){burstParticlesAt(e.offsetLeft,e.offsetTop);const d=document.createElement('div');d.className='damage '+(crit?'crit':'');d.textContent=(crit?'CRIT ':'-')+dmg;d.style.left=e.offsetLeft+'px';d.style.top=e.offsetTop+'px';document.getElementById('arena').appendChild(d);setTimeout(()=>d.remove(),650)}
 function nextWave(){if(!state.running)return;state.wave++;if(state.mode==='Zeit Angriff'&&state.wave>10){finish(true);return}state.energy=Math.min(200,state.energy+(state.mode==='Koop'?28:22));if(state.wave%5===0||state.mode==='Boss Rush'&&state.wave%3===0)toast('👹 BOSS-WELLE '+state.wave+' — '+bosses[Math.floor(state.wave/5)%bosses.length][0]);else toast('🌊 Welle '+state.wave);updateGame()}
@@ -372,6 +403,72 @@ function makeAssetPreview(canvas,x){
 function initAssetLibrary(){renderAssetGrid();}
 const ddOldShow=window.show;
 window.show=function(id){if(typeof ddOldShow==='function')ddOldShow(id);if(id==='assets3d')setTimeout(initAssetLibrary,60);}
+</script>
+
+<script>
+(function(){
+ let renderer,scene,camera,clock,loader,ready=false,arena;
+ const towerModels=new Map(),bossModels=new Map();
+ const TOWER_SCALE={blitz:1.15,omega:1.15,feuer:1.15,gift:1.15,laser:1.15,zeit:1.15,eis:1.15,geld:1.15,schild:1.15,angriff:1.15};
+ function initArenaGLB(){
+   arena=document.getElementById('arena');const cv=document.getElementById('arena3d');if(!arena||!cv||renderer)return;
+   const w=arena.clientWidth,h=arena.clientHeight;
+   renderer=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});
+   renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(w,h,false);renderer.setClearColor(0,0);
+   scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(34,w/h,.1,100);camera.position.set(0,10,19);camera.lookAt(0,0,0);
+   scene.add(new THREE.HemisphereLight(0x9fe8ff,0x090b18,2.8));
+   const key=new THREE.DirectionalLight(0xffffff,3.5);key.position.set(4,9,7);scene.add(key);
+   const fill=new THREE.PointLight(0x7d6dff,22,18);fill.position.set(-5,4,1);scene.add(fill);
+   loader=new THREE.GLTFLoader();clock=new THREE.Clock();ready=true;resizeArenaGLB();renderLoop();
+ }
+ function resizeArenaGLB(){if(!renderer||!arena)return;const w=arena.clientWidth,h=arena.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+ function percentToWorld(el){
+   const x=parseFloat(el.style.left)||50,y=parseFloat(el.style.top)||50;
+   return {x:(x-50)*.12,z:(y-50)*.10};
+ }
+ function normalize(model,target=1.55){
+   const box=new THREE.Box3().setFromObject(model),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
+   model.position.sub(center);const max=Math.max(size.x,size.y,size.z)||1;model.scale.setScalar(target/max);
+ }
+ function loadModel(file,target,done){
+   if(!loader)return;
+   loader.load('./assets/dice/'+file,g=>{normalize(g.scene,TOWER_SCALE[(file||'').replace('.glb','')]||1.15);done(g.scene)},undefined,()=>{});
+ }
+ function loadBoss(file,done){
+   if(!loader)return;
+   loader.load('./assets/bosses/'+file,g=>{normalize(g.scene,3.2);done(g.scene)},undefined,()=>{});
+ }
+ window.mountTowerGLB=function(el,file){
+   initArenaGLB();if(!ready)return;
+   loadModel(file,null,model=>{
+     const holder=new THREE.Group();holder.userData.el=el;holder.add(model);
+     const pos=percentToWorld(el);holder.position.set(pos.x,.85,pos.z);scene.add(holder);towerModels.set(el,holder);
+   });
+ }
+ window.mountBossGLB=function(el,file){
+   initArenaGLB();if(!ready)return;
+   loadBoss(file,model=>{
+     const holder=new THREE.Group();holder.userData.el=el;holder.add(model);
+     holder.position.set(0,1.2,1.8);scene.add(holder);bossModels.set(el,holder);
+   });
+ }
+ window.removeArenaModel=function(el){
+   const map=bossModels.has(el)?bossModels:towerModels;
+   const holder=map.get(el);if(holder){scene.remove(holder);map.delete(el);}
+ }
+ function renderLoop(){
+   requestAnimationFrame(renderLoop);if(!renderer)return;
+   const t=clock.getElapsedTime();
+   towerModels.forEach((h,el)=>{const p=percentToWorld(el);h.position.x=p.x;h.position.z=p.z;h.position.y=.85+Math.sin(t*2.2+(p.x+p.z))*0.08;h.rotation.y=t*.65;});
+   bossModels.forEach((h,el)=>{h.position.y=1.35+Math.sin(t*1.7)*.12;h.rotation.y=t*.38;h.scale.setScalar(1+Math.sin(t*2.4)*.025);});
+   renderer.render(scene,camera);
+ }
+ window.addEventListener('resize',resizeArenaGLB);
+ const oldStart=window.startGame;
+ window.startGame=function(mode){if(typeof oldStart==='function')oldStart(mode);setTimeout(initArenaGLB,100);}
+ const oldEnd=window.endGame;
+ window.endGame=function(){bossModels.forEach((_,el)=>removeArenaModel(el));towerModels.forEach((_,el)=>removeArenaModel(el));if(typeof oldEnd==='function')oldEnd();}
+})();
 </script>
 </body>
 </html>
