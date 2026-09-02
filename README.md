@@ -1,30 +1,26 @@
-# Dice Defense V9 — Real WebGL 3D
+# Dice Defense 3D Asset Pack
 
-V9 bringt eine echte 3D-Rendering-Schicht ins Spiel.
+**75 GLB-Modelle:** 60 Würfel + 15 Gegner/Bosse.
 
-## 3D
-- Three.js/WebGL
-- echte 3D-Geometrie und Beleuchtung
-- frei drehbare Kamera
-- Zoom
-- animierte Würfel-Türme
-- animierte Gegner
-- Boss-Modell mit Aura-Ring
-- 3D Arena/Crystal-Rift-Bühne
-- prozedurale Materialien und Emissive-Effekte
-- responsive Stage
+## Für GitHub Pages
+Lege den Ordner z.B. als `assets/` in dein Repository und nutze `<model-viewer>`:
 
-Die Modelle sind in V9 prozedural aus 3D-Geometrie aufgebaut. Dadurch bleibt das Repository klein und die Assets sind sofort browserfähig. Die Geometrien können später 1:1 durch echte GLB/GLTF-Modelle ersetzt werden.
+```html
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
-## Multiplayer
-Die V7/V8 WebSocket-Grundlage bleibt enthalten.
-
-## Start
-```bash
-npm install
-npm start
+<model-viewer
+  src="./assets/dice/angriff.glb"
+  camera-controls
+  auto-rotate
+  shadow-intensity="1"
+  style="width:320px;height:320px">
+</model-viewer>
 ```
-Danach `http://localhost:8080`.
+
+`manifest.json` enthält Namen, Fähigkeiten und Dateipfade.
 
 ## Hinweis
-Three.js wird aktuell vom jsDelivr-CDN geladen. Für einen komplett autarken Build kann die Library später lokal ins Repository gelegt werden. Für hochwertige Produktionsmodelle wären als nächster Asset-Schritt echte GLB/GLTF-Dateien, Texturen, Rigging und Animation-Clips sinnvoll.
+Die Assets sind stilisierte, leichte Web-Modelle mit unterschiedlichen Farben und Silhouetten, passend zur Dice-Defense-Optik; sie sind bewusst nicht 1:1 gerenderte High-End-Spielmodelle.
+
+## Lizenz
+CC0-1.0 für die hier erzeugten Assets.

@@ -1,0 +1,457 @@
+{
+  "version": "1.0",
+  "license": "CC0-1.0",
+  "format": "glb",
+  "models": [
+    {
+      "type": "dice",
+      "name": "Angriff",
+      "ability": "Erhöht Schaden",
+      "file": "dice/angriff.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Splash",
+      "ability": "Trifft mehrere Gegner",
+      "file": "dice/splash.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Blitz",
+      "ability": "Kettenblitz",
+      "file": "dice/blitz.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Eis",
+      "ability": "Verlangsamt Gegner",
+      "file": "dice/eis.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Feuer",
+      "ability": "Schaden über Zeit",
+      "file": "dice/feuer.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Gift",
+      "ability": "Vergiftet Gegner",
+      "file": "dice/gift.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Wind",
+      "ability": "Schiebt Gegner zurück",
+      "file": "dice/wind.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Geld",
+      "ability": "Erhöht Einkommen",
+      "file": "dice/geld.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Krit",
+      "ability": "Chance auf kritische Treffer",
+      "file": "dice/krit.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Laser",
+      "ability": "Geradliniger Strahl",
+      "file": "dice/laser.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Zeit",
+      "ability": "Verlangsamt Wellen",
+      "file": "dice/zeit.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Schild",
+      "ability": "Reduziert Schaden",
+      "file": "dice/schild.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Mine",
+      "ability": "Explosion bei Kontakt",
+      "file": "dice/mine.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Kopie",
+      "ability": "Kopiert Nachbarn",
+      "file": "dice/kopie.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Zufall",
+      "ability": "Zufällige Fähigkeit",
+      "file": "dice/zufall.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Heilung",
+      "ability": "Heilt Leben",
+      "file": "dice/heilung.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Regeneration",
+      "ability": "Stellt Leben wieder her",
+      "file": "dice/regeneration.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Panzerung",
+      "ability": "Erhöht Abwehr",
+      "file": "dice/panzerung.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Reflex",
+      "ability": "Reflektiert Schaden",
+      "file": "dice/reflex.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Sog",
+      "ability": "Zieht Gegner an",
+      "file": "dice/sog.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Teleport",
+      "ability": "Teleportiert Gegner",
+      "file": "dice/teleport.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Kette",
+      "ability": "Verbindet Effekte",
+      "file": "dice/kette.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Frostnova",
+      "ability": "Friert Gegner",
+      "file": "dice/frostnova.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Vampir",
+      "ability": "Heilt durch Schaden",
+      "file": "dice/vampir.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Doppel",
+      "ability": "Verdoppelt Effekt",
+      "file": "dice/doppel.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Echo",
+      "ability": "Wiederholt letzten Effekt",
+      "file": "dice/echo.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Explosion",
+      "ability": "Explodiert",
+      "file": "dice/explosion.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Bouncer",
+      "ability": "Gegner prallen zurück",
+      "file": "dice/bouncer.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Magnet",
+      "ability": "Erhöht Sammelradius",
+      "file": "dice/magnet.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Loch",
+      "ability": "Entfernt Gegner",
+      "file": "dice/loch.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Holz",
+      "ability": "Mehr Trefferpunkte",
+      "file": "dice/holz.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Stein",
+      "ability": "Mehr Widerstand",
+      "file": "dice/stein.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Metall",
+      "ability": "Mehr Schaden",
+      "file": "dice/metall.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Licht",
+      "ability": "Enthüllt Gegner",
+      "file": "dice/licht.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Dunkel",
+      "ability": "Reduziert Sicht",
+      "file": "dice/dunkel.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Psi",
+      "ability": "Psychischer Schaden",
+      "file": "dice/psi.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Plasma",
+      "ability": "Durchdringt Gegner",
+      "file": "dice/plasma.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Schock",
+      "ability": "Betäubt Gegner",
+      "file": "dice/schock.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Schwarm",
+      "ability": "Ruft Käfer",
+      "file": "dice/schwarm.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Bombe",
+      "ability": "Countdown",
+      "file": "dice/bombe.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Aufladung",
+      "ability": "Lädt nächsten Effekt",
+      "file": "dice/aufladung.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Überladung",
+      "ability": "Extremer Bonus",
+      "file": "dice/ueberladung.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Fokus",
+      "ability": "Erhöht Reichweite",
+      "file": "dice/fokus.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Kombo",
+      "ability": "Verstärkt Kombination",
+      "file": "dice/kombo.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Glück",
+      "ability": "Erhöht Glück",
+      "file": "dice/glueck.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Fluch",
+      "ability": "Schwächt Gegner",
+      "file": "dice/fluch.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Seuche",
+      "ability": "Verbreitet Schaden",
+      "file": "dice/seuche.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Zerstörung",
+      "ability": "Ignoriert Abwehr",
+      "file": "dice/zerstoerung.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Schatten",
+      "ability": "Zusatzschaden",
+      "file": "dice/schatten.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Sonne",
+      "ability": "Stärker bei Tag",
+      "file": "dice/sonne.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Portal",
+      "ability": "Erschafft Portal",
+      "file": "dice/portal.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Überreieren",
+      "ability": "Blockiert Gegner",
+      "file": "dice/ueberreieren.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Tausch",
+      "ability": "Tauscht Position",
+      "file": "dice/tausch.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Geist",
+      "ability": "Verängstigt Gegner",
+      "file": "dice/geist.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Dimension",
+      "ability": "Trifft entfernte Ziele",
+      "file": "dice/dimension.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Sturm",
+      "ability": "Angriffsgeschwindigkeit",
+      "file": "dice/sturm.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Komet",
+      "ability": "Fällt auf Gegner",
+      "file": "dice/komet.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Schwerkraft",
+      "ability": "Verlangsamt stark",
+      "file": "dice/schwerkraft.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Implosion",
+      "ability": "Zieht an und explodiert",
+      "file": "dice/implosion.glb"
+    },
+    {
+      "type": "dice",
+      "name": "Omega",
+      "ability": "Ultimate-Fähigkeit",
+      "file": "dice/omega.glb"
+    },
+    {
+      "type": "boss",
+      "name": "Roter Balloon",
+      "ability": "Spawnt explosive Ballons",
+      "file": "bosses/roter_balloon.glb"
+    },
+    {
+      "type": "boss",
+      "name": "Schwarzer Balloon",
+      "ability": "Stärkere Ballons",
+      "file": "bosses/schwarzer_balloon.glb"
+    },
+    {
+      "type": "boss",
+      "name": "Metall Balloon",
+      "ability": "Gepanzerte Ballons",
+      "file": "bosses/metall_balloon.glb"
+    },
+    {
+      "type": "boss",
+      "name": "Lila Balloon",
+      "ability": "Verlangsamt Würfel",
+      "file": "bosses/lila_balloon.glb"
+    },
+    {
+      "type": "boss",
+      "name": "Zeppelin",
+      "ability": "Wirft Bomben ab",
+      "file": "bosses/zeppelin.glb"
+    },
+    {
+      "type": "boss",
+      "name": "Bloom Queen",
+      "ability": "Wurzeln blockieren Wege",
+      "file": "bosses/bloom_queen.glb"
+    },
+    {
+      "type": "boss",
+      "name": "Void Behemoth",
+      "ability": "Sog und Energieschaden",
+      "file": "bosses/void_behemoth.glb"
+    },
+    {
+      "type": "boss",
+      "name": "Mecha Dreadnaught",
+      "ability": "Laser und Drohnen",
+      "file": "bosses/mecha_dreadnaught.glb"
+    },
+    {
+      "type": "boss",
+      "name": "Inferno Lord",
+      "ability": "Feuerzonen",
+      "file": "bosses/inferno_lord.glb"
+    },
+    {
+      "type": "boss",
+      "name": "Bone Cage",
+      "ability": "Sperrt Würfel",
+      "file": "bosses/bone_cage.glb"
+    },
+    {
+      "type": "boss",
+      "name": "Curse Dice",
+      "ability": "Schwächt Würfel",
+      "file": "bosses/curse_dice.glb"
+    },
+    {
+      "type": "boss",
+      "name": "Spike Trap",
+      "ability": "Bestraft Nachbarn",
+      "file": "bosses/spike_trap.glb"
+    },
+    {
+      "type": "boss",
+      "name": "Toxic Core",
+      "ability": "Giftwolken",
+      "file": "bosses/toxic_core.glb"
+    },
+    {
+      "type": "boss",
+      "name": "Obsidian Web",
+      "ability": "Netze blockieren",
+      "file": "bosses/obsidian_web.glb"
+    },
+    {
+      "type": "boss",
+      "name": "Dark Ritual",
+      "ability": "Stiehlt Energie",
+      "file": "bosses/dark_ritual.glb"
+    }
+  ]
+}
