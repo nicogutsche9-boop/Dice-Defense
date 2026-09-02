@@ -1,47 +1,27 @@
-# Dice Defense — GitHub Ready Prototype
+# Dice Defense V2
 
-Ein spielbarer, eigenständiger HTML/CSS/JavaScript-Prototyp auf Basis des gemeinsam entwickelten Dice-Defense-Konzepts.
+GitHub-Pages-fertiger HTML/CSS/JavaScript-Prototyp.
 
-## Start
+## Spielen
+`index.html` öffnen oder auf GitHub Pages veröffentlichen.
 
-### Lokal
-Einfach `index.html` im Browser öffnen.
+## Neu in V2
+- animierte Gegner
+- echte Wellen
+- Boss-Wellen und sechs Boss-Namen
+- Lebenssystem
+- Energie
+- Gold
+- Würfel-Beschwörung
+- Merge-Aktion
+- Projektil- und Schadensanimationen
+- Boss-HP-Anzeige
+- spielbare Modi
+- Koop-Lobby-UI
+- Shop, Battle Pass, Events, Inventar, Upgrades, Quests, Profil, Clan, Rangliste, Einstellungen
+- responsive Mobile-UI
 
-### GitHub Pages
-1. Repository auf GitHub erstellen.
-2. Alle Dateien dieses Ordners hochladen.
-3. **Settings → Pages → Deploy from a branch** auswählen.
-4. Branch `main` und Ordner `/root` auswählen.
-5. Speichern. Nach dem Deployment ist das Spiel direkt im Browser spielbar.
+## GitHub Pages
+Repository → Settings → Pages → Deploy from branch → `main` → `/ (root)`.
 
-Es werden keine externen Libraries und keine Build-Tools benötigt.
-
-## Enthalten
-
-- Hauptmenü
-- Spielmodus-Auswahl
-- Klassisch
-- Boss Rush
-- Zeit Angriff
-- Endlos
-- Herausforderung
-- Koop-Lobby
-- Shop
-- Battle Pass
-- Events
-- Inventar
-- Würfelübersicht
-- Upgrades
-- Quests
-- Profil & Erfolge
-- Clan
-- Rangliste
-- Einstellungen
-- spielbare Demo-Runde mit Wellen, Leben, Energie, Gold, Würfel-Beschwörung und Merge-System
-- responsive Mobile-Navigation
-
-## Hinweis
-
-Das ist ein **Frontend-Prototyp**. Login, echte Online-Koop-Verbindungen, Matchmaking, Cloud-Speicherung, Echtgeldzahlungen und serverseitige Ranglisten sind noch nicht angebunden. Die Shop-Käufe sind deshalb reine Demo-Aktionen.
-
-Für ein echtes Online-Spiel wären als nächstes Backend, Datenbank, Accounts und WebSocket/WebRTC-Koop sinnvoll.
+Dies ist weiterhin ein Frontend-Prototyp. Echtes Online-Koop, Accounts, Matchmaking und serverseitige Speicherung benötigen ein Backend.
