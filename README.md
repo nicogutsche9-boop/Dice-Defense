@@ -1,27 +1,30 @@
-# Dice Defense V8 — Crystal Rift 3D Art Edition
+# Dice Defense V9 — Real WebGL 3D
 
-V8 bringt den Prototyp in Richtung einer fertigen Mobile-Game-Präsentation.
+V9 bringt eine echte 3D-Rendering-Schicht ins Spiel.
 
-## V8
-- neue „Crystal Rift“-Art-Direction
-- pseudo-3D/3D-look für Würfel, Gegner und Bosse
-- 3D Showcase mit modellartigen Würfelkarten
-- detailliertere Arena mit Licht-/Depth-Layern
-- ausgearbeitete Tower-Slots
-- Boss-Auren und stärkere Trefferoptik
-- Online-Koop-Grundlage aus V7 bleibt erhalten
-- server-authoritative State, Wellen, Gegner, Tower, Fusion und Ultimate
-- Deck Builder, Talentbaum, Meisterschaft, Sammlung und alle bisherigen Menüs
+## 3D
+- Three.js/WebGL
+- echte 3D-Geometrie und Beleuchtung
+- frei drehbare Kamera
+- Zoom
+- animierte Würfel-Türme
+- animierte Gegner
+- Boss-Modell mit Aura-Ring
+- 3D Arena/Crystal-Rift-Bühne
+- prozedurale Materialien und Emissive-Effekte
+- responsive Stage
 
-## Hinweis zu echten 3D-Dateien
-Die V8-Webversion nutzt bewusst eine leichtgewichtige, browserfertige 3D-Illusion ohne externe Asset-Abhängigkeiten. Für echte GLB/GLTF-Modelle, Rigging, Animationen und vollständige 3D-Kamera können in einem nächsten Schritt konkrete 3D-Assets integriert werden.
+Die Modelle sind in V9 prozedural aus 3D-Geometrie aufgebaut. Dadurch bleibt das Repository klein und die Assets sind sofort browserfähig. Die Geometrien können später 1:1 durch echte GLB/GLTF-Modelle ersetzt werden.
+
+## Multiplayer
+Die V7/V8 WebSocket-Grundlage bleibt enthalten.
 
 ## Start
 ```bash
 npm install
 npm start
 ```
-Dann `http://localhost:8080` öffnen.
+Danach `http://localhost:8080`.
 
-## Online
-Der WebSocket-Server muss für echtes Internet-Koop auf Node-fähigem Hosting laufen. GitHub Pages kann nur das statische Frontend hosten.
+## Hinweis
+Three.js wird aktuell vom jsDelivr-CDN geladen. Für einen komplett autarken Build kann die Library später lokal ins Repository gelegt werden. Für hochwertige Produktionsmodelle wären als nächster Asset-Schritt echte GLB/GLTF-Dateien, Texturen, Rigging und Animation-Clips sinnvoll.

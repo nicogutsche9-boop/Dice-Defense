@@ -137,7 +137,7 @@ radial-gradient(ellipse at 50% 55%,#243a72 0,#101b3b 43%,#060b18 78%)}
 <div class="modal" id="result"><div class="card"><h1 id="resultTitle">🏆 Sieg!</h1><p id="resultText"></p><div class="stat">Wellen <b id="resultWave">0</b></div><div class="stat">Gold verdient <b id="resultGold">0</b></div><button class="btn primary" onclick="closeResult()">ZURÜCK ZUM HAUPTMENÜ</button></div></div>
 
 <script>
-const menu=[['home','🏠','Hauptmenü'],['modes','🎮','Spielen'],['coop','🤝','Koop'],['shop','🛒','Shop'],['pass','👑','Battle Pass'],['events','🎉','Events'],['inventory','🎲','Würfel'],['upgrades','⬆️','Upgrades'],['quests','📜','Quests'],['mastery','🌟','Meisterschaft'],['bosses','👹','Bosses'],['collection','📚','Sammlung'],['online','🌐','Online Koop'],['showcase','🎨','3D Showcase'],['deckbuilder','🧩','Deck Builder'],['talents','🌳','Talentbaum'],['profile','👤','Profil'],['clan','🛡️','Clan'],['rank','🏆','Rangliste'],['settings','⚙️','Einstellungen']];
+const menu=[['home','🏠','Hauptmenü'],['modes','🎮','Spielen'],['coop','🤝','Koop'],['shop','🛒','Shop'],['pass','👑','Battle Pass'],['events','🎉','Events'],['inventory','🎲','Würfel'],['upgrades','⬆️','Upgrades'],['quests','📜','Quests'],['mastery','🌟','Meisterschaft'],['bosses','👹','Bosses'],['collection','📚','Sammlung'],['online','🌐','Online Koop'],['showcase','🎨','3D Showcase'],['3dgame','🧊','3D Arena'],['deckbuilder','🧩','Deck Builder'],['talents','🌳','Talentbaum'],['profile','👤','Profil'],['clan','🛡️','Clan'],['rank','🏆','Rangliste'],['settings','⚙️','Einstellungen']];
 const dice=[
 ['Blitz','d1','⚡',6,'Kettenblitz'],['Magie','d2','✦',7,'Kritischer Zauber'],['Feuer','d3','🔥',7,'Brand'],['Gift','d4','☠️',6,'Giftstapel'],['Laser','d5','🔴',5,'Durchdringung'],['Zeit','d2','⏳',3,'Slow'],['Eis','d6','❄️',7,'Einfrieren'],['Gold','d3','🪙',4,'Bonusgold'],['Schild','d4','🛡️',4,'Barriere']];
 const bosses=[
@@ -288,6 +288,53 @@ function updateOnline(s){
 }
 function startOnlineGame(){sendWS({type:'start_game',room:onlineRoom});}
 initNav();renderModes();buildArena('preview',true);buildArena('coopPreview',true);renderDice('inventoryDice');renderGameDice();renderPass();renderUpgrades();renderQuests();renderBadges();renderRanks();renderMastery();renderBosses();renderDeck();update();state.speed=1;connectWS();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.min.js"></script>
+<script>
+let scene3D,cam3D,renderer3D,root3D,clock3D,anim3D=[],boss3D=null,drag3D=false,lastX=0,lastY=0,rotX=.55,rotY=.45,zoom=13;
+function mat3(c,em=0){return new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:em,metalness:.35,roughness:.28});}
+function makeCube(color,icon=0){
+ const g=new THREE.Group();
+ const body=new THREE.Mesh(new THREE.BoxGeometry(1.5,1.5,1.5),mat3(color,.25));g.add(body);
+ const bevel=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.53,1.53,1.53)),new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:.22}));g.add(bevel);
+ const core=new THREE.Mesh(new THREE.OctahedronGeometry(.45,1),mat3(0x7defff,1));g.add(core);
+ const ring=new THREE.Mesh(new THREE.TorusGeometry(.72,.025,8,48),new THREE.MeshBasicMaterial({color:0x8df4ff}));ring.rotation.x=Math.PI/2;g.add(ring);
+ return g;
+}
+function makeEnemy(color=0x9d69ff,boss=false){
+ const g=new THREE.Group(),scale=boss?1.7:0.7;
+ const body=new THREE.Mesh(new THREE.IcosahedronGeometry(scale,1),mat3(color,.18));g.add(body);
+ const eye=new THREE.Mesh(new THREE.SphereGeometry(scale*.22,16,16),mat3(0xff6688,1));eye.position.z=scale*.8;g.add(eye);
+ if(boss){const ring=new THREE.Mesh(new THREE.TorusGeometry(scale*1.3,.06,12,64),new THREE.MeshBasicMaterial({color:0xffb04f}));g.add(ring);g.userData.ring=ring;}
+ return g;
+}
+function init3D(){
+ const host=document.getElementById('threeStage');if(!host||renderer3D)return;
+ scene3D=new THREE.Scene();scene3D.background=new THREE.Color(0x050914);
+ cam3D=new THREE.PerspectiveCamera(55,host.clientWidth/host.clientHeight,.1,100);cam3D.position.set(0,8,zoom);
+ renderer3D=new THREE.WebGLRenderer({antialias:true});renderer3D.setPixelRatio(Math.min(devicePixelRatio,2));renderer3D.setSize(host.clientWidth,host.clientHeight);renderer3D.shadowMap.enabled=true;host.appendChild(renderer3D.domElement);
+ clock3D=new THREE.Clock();root3D=new THREE.Group();scene3D.add(root3D);
+ scene3D.add(new THREE.HemisphereLight(0x9bdcff,0x090b19,2.2));
+ const key=new THREE.DirectionalLight(0xffffff,3);key.position.set(4,10,5);key.castShadow=true;scene3D.add(key);
+ const floor=new THREE.Mesh(new THREE.CylinderGeometry(7,7,.35,64),new THREE.MeshStandardMaterial({color:0x101d3b,metalness:.45,roughness:.35}));floor.receiveShadow=true;floor.position.y=-.2;root3D.add(floor);
+ for(let i=0;i<18;i++){const c=new THREE.Mesh(new THREE.OctahedronGeometry(.15+Math.random()*.35),mat3(0x4c9bff,.6));c.position.set((Math.random()-.5)*13,.2+Math.random()*1,(Math.random()-.5)*9);root3D.add(c);anim3D.push({o:c,s:.6+Math.random()});}
+ for(let i=0;i<5;i++){const t=makeCube([0x59dfff,0xb46bff,0xffcc62,0x73ffb0,0xff6688][i]);t.position.set(-4+i*2,1,0);t.castShadow=true;root3D.add(t);anim3D.push({o:t,s:1.1+i*.1});}
+ for(let i=0;i<5;i++){const e=makeEnemy(i===4?0xff5278:0x8d72ff,false);e.position.set(-5+i*2,.65,-2.6);root3D.add(e);anim3D.push({o:e,s:.8+i*.06,enemy:true,baseX:e.position.x});}
+ animate3D(); window.addEventListener('resize',resize3D);
+ host.addEventListener('pointerdown',e=>{drag3D=true;lastX=e.clientX;lastY=e.clientY});
+ window.addEventListener('pointerup',()=>drag3D=false);
+ window.addEventListener('pointermove',e=>{if(!drag3D)return;rotY+=(e.clientX-lastX)*.006;rotX+=(e.clientY-lastY)*.004;rotX=Math.max(.1,Math.min(1.25,rotX));lastX=e.clientX;lastY=e.clientY});
+ host.addEventListener('wheel',e=>{zoom=Math.max(7,Math.min(20,zoom+e.deltaY*.01))},{passive:true});
+}
+function animate3D(){requestAnimationFrame(animate3D);if(!renderer3D)return;const t=clock3D.getElapsedTime();root3D.rotation.y=rotY;cam3D.position.x=Math.sin(rotY)*zoom;cam3D.position.z=Math.cos(rotY)*zoom;cam3D.position.y=4+rotX*5;cam3D.lookAt(0,1,0);
+ anim3D.forEach((a,i)=>{a.o.rotation.x=t*a.s*.45;a.o.rotation.y=t*a.s*.7;if(a.enemy)a.o.position.x=a.baseX+Math.sin(t*.7+i)*.35;else a.o.position.y=1+Math.sin(t*a.s+i)*.12;});
+ if(boss3D){boss3D.rotation.y=t*.7;if(boss3D.userData.ring)boss3D.userData.ring.rotation.z=t}
+ renderer3D.render(scene3D,cam3D);}
+function resize3D(){const h=document.getElementById('threeStage');if(!h||!renderer3D)return;cam3D.aspect=h.clientWidth/h.clientHeight;cam3D.updateProjectionMatrix();renderer3D.setSize(h.clientWidth,h.clientHeight)}
+function spawn3DBoss(){if(!root3D)return; if(boss3D)root3D.remove(boss3D);boss3D=makeEnemy(0xff596e,true);boss3D.position.set(0,1,2.3);root3D.add(boss3D);document.getElementById('threeBoss').textContent='BOSS · VOID TITAN';toast('👹 Void Titan ist erschienen!')}
+function reset3D(){if(!root3D)return;while(root3D.children.length>1)root3D.remove(root3D.children[1]);boss3D=null;document.getElementById('threeBoss').textContent='NO BOSS';toast('3D Arena zurückgesetzt')}
+const oldShow=window.show;window.show=function(id){if(typeof oldShow==='function')oldShow(id);if(id==='3dgame')setTimeout(init3D,50);}
 </script>
 </body>
 </html>
