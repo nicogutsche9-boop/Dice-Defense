@@ -131,6 +131,7 @@ function buildArena(id,mini=false){
  const slots=[[20,29],[35,29],[53,29],[68,29],[20,58],[35,58],[53,58],[68,58]];
  slots.forEach((v,i)=>{const s=document.createElement('div');s.className='slot';s.style.left=v[0]+'%';s.style.top=v[1]+'%';s.dataset.slot=i;s.textContent='SLOT '+(i+1);s.onclick=()=>placeDie(s);a.appendChild(s)});
 }
+function onlinePlace(kind,slot){sendWS({type:'place_tower',room:onlineRoom,kind:kind||'bolt',x:parseFloat(slot.style.left),y:parseFloat(slot.style.top)})}
 function placeDie(slot){
  if(!state.running){toast('Starte zuerst eine Runde.');return}
  if(slot.classList.contains('occupied')){toast('Dieser Slot ist belegt.');return}
@@ -154,7 +155,7 @@ function updateGame(){document.getElementById('wave').textContent=state.wave;doc
  document.getElementById('bossInfo').innerHTML=b[1]+' · '+b[2]+' <span class="phase">'+phase+'</span>';document.getElementById('mutator').textContent=mutators[state.wave%mutators.length];update()}
 function summon(){
  if(!state.running){toast('Starte zuerst eine Runde.');return}
- const slots=[...document.querySelectorAll('#arena .slot:not(.occupied)')];
+ if(onlineRoom){onlinePlace('bolt',{style:{left:'50%',top:'50%'}});return} const slots=[...document.querySelectorAll('#arena .slot:not(.occupied)')];
  if(!slots.length){toast('Alle Slots sind belegt. Fusioniere zuerst!');return}
  placeDie(slots[Math.floor(Math.random()*slots.length)]);
 }
@@ -229,9 +230,19 @@ function handleWS(m){
   onlineRoom=m.room;document.getElementById('roomCode').textContent=m.room;
   show('online');toast('🌐 Raum '+m.room+' verbunden');updateOnline(m.state);
  }
- if(m.type==='state')updateOnline(m.state);
+ if(m.type==='state'){updateOnline(m.state);renderAuthoritative(m.state)};
  if(m.type==='error')toast('⚠️ '+m.message);
- if(m.type==='game_started'){show('game');toast('🤝 Online-Koop gestartet!');updateOnline(m.state)}
+ if(m.type==='game_started'){show('game');toast('🤝 Online-Koop gestartet!');updateOnline(m.state);renderAuthoritative(m.state)}
+}
+
+function renderAuthoritative(s){
+ if(!s)return;
+ updateOnline(s);
+ if(typeof state!=='undefined'){state.wave=s.wave;state.energy=s.energy;state.gold=s.gold}
+ const arena=document.getElementById('arena'); if(!arena)return;
+ arena.querySelectorAll('.remoteEnemy').forEach(x=>x.remove());
+ (s.enemies||[]).forEach(e=>{const el=document.createElement('div');el.className='enemy remoteEnemy '+(e.type==='boss'?'boss':'');el.style.left=e.x+'%';el.style.top=e.y+'%';el.innerHTML=`<div class="hp"><i style="width:${Math.max(0,e.hp/e.maxHp*100)}%"></i></div><div class="label">${e.type.toUpperCase()}</div>`;arena.appendChild(el)});
+ document.getElementById('wave')?.replaceChildren(document.createTextNode('WAVE '+s.wave));
 }
 function updateOnline(s){
  if(!s)return;
